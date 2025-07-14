@@ -35,7 +35,3 @@ A userscript that seamlessly adds a stylish background download button to osu! b
 ## Author
 
 [Noxie](https://github.com/Noxie0)
-
-## License
-
-This project is released under an open license. (Specify license here if desired.)
