@@ -1,4 +1,4 @@
-# osu-background-grabber
+# osu!BackgroundGrabber
 
 A userscript that seamlessly adds a stylish background download button to osu! beatmap pages—grab those beautiful covers with one click!
 
