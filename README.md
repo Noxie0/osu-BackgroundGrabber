@@ -13,7 +13,7 @@ A userscript that seamlessly adds a stylish background download button to osu! b
 
 1. **Install a userscript manager** such as [Tampermonkey](https://tampermonkey.net/) or [Violentmonkey](https://violentmonkey.github.io/) in your browser.
 2. **Download the userscript:**  
-   [osu! BackgroundGrabber-1.1.user.js](./osu%21%20BackgroundGrabber-1.1.user.js)
+   [osu! BackgroundGrabber-1.1.user.js](./osu%21%20BackgroundGrabber-1.1.user.js) or use [Greasy Fork](https://greasyfork.org/en/scripts/542558-osu-backgroundgrabber) for fast installation.
 3. **Open the userscript file in your browser**—your userscript manager should prompt you to install it.
 
 ### Manual Installation
