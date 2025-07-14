@@ -6,6 +6,7 @@
 // @author       Noxie
 // @match        https://osu.ppy.sh/beatmapsets/*
 // @icon         https://raw.githubusercontent.com/Noxie0/osu-background-grabber/refs/heads/main/icon.png
+// @license      MIT
 // @grant        none
 // ==/UserScript==
 
