@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         osu! BackgroundGrabber
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.2.1
 // @description  Seamlessly adds a stylish background download button to osu! beatmap pages - grab those beautiful covers with one click!
 // @author       Noxie
 // @match        https://osu.ppy.sh/*
@@ -13,7 +13,6 @@
 (function () {
     'use strict';
 
-    // Inject custom CSS
     const style = document.createElement('style');
     style.textContent = `
         .background-btn {
@@ -74,26 +73,6 @@
         createButton(beatmapSetId, container);
     }
 
-    // Observe for DOM mutations AND route changes
-    function setupObservers() {
-        let lastPath = location.pathname;
-
-        const observeReactRouting = new MutationObserver(() => {
-            if (location.pathname !== lastPath) {
-                lastPath = location.pathname;
-                waitForContainer(tryInjectButton);
-            }
-        });
-
-        const observeDOM = new MutationObserver(() => {
-            waitForContainer(tryInjectButton);
-        });
-
-        observeReactRouting.observe(document.body, { childList: true, subtree: true });
-        observeDOM.observe(document.querySelector('#root'), { childList: true, subtree: true });
-    }
-
-    // Wait for container to exist
     function waitForContainer(callback, attempts = 0) {
         const container = document.querySelector('.beatmapset-header__buttons');
         if (container) {
@@ -103,7 +82,39 @@
         }
     }
 
-    // Run on initial load
+    function setupObservers() {
+        let lastPath = location.pathname;
+
+        const observeReactRouting = new MutationObserver(() => {
+            if (location.pathname !== lastPath) {
+                lastPath = location.pathname;
+                waitForContainer(tryInjectButton);
+            }
+        });
+        observeReactRouting.observe(document.body, { childList: true, subtree: true });
+
+        const observeDOM = new MutationObserver(() => {
+            waitForContainer(tryInjectButton);
+        });
+
+        const rootNode = document.querySelector('#root');
+        if (rootNode) {
+            observeDOM.observe(rootNode, { childList: true, subtree: true });
+        } else {
+            let retryCount = 0;
+            const retry = setInterval(() => {
+                const node = document.querySelector('#root');
+                if (node) {
+                    observeDOM.observe(node, { childList: true, subtree: true });
+                    clearInterval(retry);
+                } else if (++retryCount > 10) {
+                    clearInterval(retry);
+                    console.warn('[BackgroundGrabber] Failed to observe #root after 10 tries.');
+                }
+            }, 300);
+        }
+    }
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             setupObservers();
