@@ -5,6 +5,7 @@
 // @description  Seamlessly adds a stylish background download button to osu! beatmap pages - grab those beautiful covers with one click!
 // @author       Noxie
 // @match        https://osu.ppy.sh/beatmapsets/*
+// @icon         https://raw.githubusercontent.com/Noxie0/osu-background-grabber/refs/heads/main/icon.png
 // @grant        none
 // ==/UserScript==
 
