@@ -10,7 +10,7 @@ A userscript that seamlessly adds a stylish background download button to osu! b
 - Smart detection and insertion even with osu!'s React-based dynamic routing.
 - Compatible with osuplus beatmap mirror buttons.
 
-## Installation
+## Installation **(RECOMMENDED)**
 
 1. **Install a userscript manager** such as [Tampermonkey](https://tampermonkey.net/) or [Violentmonkey](https://violentmonkey.github.io/) in your browser.
 2. **Download the userscript:**  
