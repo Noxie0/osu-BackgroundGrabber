@@ -38,7 +38,7 @@ If your browser does **not** automatically prompt you to install the script:
 ## Requirements
 
 - A modern web browser (Chrome, Firefox, Edge, etc.).
-- A userscript manager extension (see Installation).
+- A userscript manager extension (see [Installation](https://github.com/Noxie0/osu-background-grabber#installation)).
 
 ## Author
 
