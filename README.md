@@ -16,6 +16,14 @@ A userscript that seamlessly adds a stylish background download button to osu! b
    [osu! BackgroundGrabber-1.1.user.js](./osu%21%20BackgroundGrabber-1.1.user.js)
 3. **Open the userscript file in your browser**—your userscript manager should prompt you to install it.
 
+### Manual Installation
+
+If your browser does **not** automatically prompt you to install the script:
+- Open your userscript manager's dashboard (e.g., click the Tampermonkey or Violentmonkey icon).
+- Choose **"Create a new script"** or **"Add script"**.
+- Open `osu! BackgroundGrabber-1.1.user.js` with a text editor, copy the entire content.
+- Paste the content into the new script in your userscript manager and **save**.
+
 ## Usage
 
 - Visit any osu! beatmapset page (URL like `https://osu.ppy.sh/beatmapsets/*`).
