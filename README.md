@@ -8,6 +8,7 @@ A userscript that seamlessly adds a stylish background download button to osu! b
 - Downloads the original full-size background image where available, or the cover image as a fallback.
 - Button styling matches osu!'s interface for a native look and feel.
 - Smart detection and insertion even with osu!'s React-based dynamic routing.
+- Compatible with osuplus beatmap mirror buttons.
 
 ## Installation
 
