@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         osu! BackgroundGrabber
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Seamlessly adds a stylish background download button to osu! beatmap pages - grab those beautiful covers with one click!
 // @author       Noxie
-// @match        https://osu.ppy.sh/beatmapsets/*
+// @match        https://osu.ppy.sh/*
 // @icon         https://raw.githubusercontent.com/Noxie0/osu-background-grabber/refs/heads/main/icon.png
 // @license      MIT
 // @grant        none
@@ -13,7 +13,7 @@
 (function () {
     'use strict';
 
-    // Inject custom CSS to match osu!'s button styling
+    // Inject custom CSS
     const style = document.createElement('style');
     style.textContent = `
         .background-btn {
@@ -38,108 +38,79 @@
     `;
     document.head.appendChild(style);
 
-    // Main function to create and add the background button
-    function addBackgroundButton() {
-        const container = document.querySelector('.beatmapset-header__buttons');
-        if (!container) return;
+    function createButton(beatmapSetId, container) {
+        const rawUrl = `https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/raw.jpg`;
+        const fallbackUrl = `https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/cover.jpg`;
 
-        // Prevent creating duplicate buttons
-        if (container.querySelector('.background-btn')) return;
+        const existingButton = container.querySelector('a[class*="btn"], button[class*="btn"]');
+        const bgBtn = document.createElement('a');
 
-        // Extract beatmapset ID from current URL
+        bgBtn.className = existingButton ? existingButton.className : 'btn-osu-big btn-osu-big--beatmapset-header';
+        bgBtn.classList.add('background-btn');
+        bgBtn.href = rawUrl;
+        bgBtn.target = '_blank';
+        bgBtn.rel = 'noopener noreferrer';
+        bgBtn.innerHTML = '<i class="fas fa-image"></i><span>Background</span>';
+
+        bgBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const testImg = new Image();
+            testImg.onload = () => window.open(rawUrl, '_blank');
+            testImg.onerror = () => window.open(fallbackUrl, '_blank');
+            testImg.src = rawUrl;
+        });
+
+        container.appendChild(bgBtn);
+    }
+
+    function tryInjectButton() {
         const match = window.location.pathname.match(/\/beatmapsets\/(\d+)/);
         if (!match) return;
 
         const beatmapSetId = match[1];
+        const container = document.querySelector('.beatmapset-header__buttons');
+        if (!container || container.querySelector('.background-btn')) return;
 
-        // Try to get the original full-size background image first, fallback to cover
-        const bgUrlRaw = `https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/raw.jpg`;
-        const bgUrlCover = `https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/cover.jpg`;
+        createButton(beatmapSetId, container);
+    }
 
-        // Copy styling from existing buttons for consistency
-        const existingButton = container.querySelector('a[class*="btn"], button[class*="btn"]');
+    // Observe for DOM mutations AND route changes
+    function setupObservers() {
+        let lastPath = location.pathname;
 
-        // Create the new background button element
-        const bgBtn = document.createElement('a');
+        const observeReactRouting = new MutationObserver(() => {
+            if (location.pathname !== lastPath) {
+                lastPath = location.pathname;
+                waitForContainer(tryInjectButton);
+            }
+        });
 
-        // Apply existing button classes or fallback classes
-        if (existingButton) {
-            bgBtn.className = existingButton.className;
-        } else {
-            bgBtn.className = 'btn-osu-big btn-osu-big--beatmapset-header';
+        const observeDOM = new MutationObserver(() => {
+            waitForContainer(tryInjectButton);
+        });
+
+        observeReactRouting.observe(document.body, { childList: true, subtree: true });
+        observeDOM.observe(document.querySelector('#root'), { childList: true, subtree: true });
+    }
+
+    // Wait for container to exist
+    function waitForContainer(callback, attempts = 0) {
+        const container = document.querySelector('.beatmapset-header__buttons');
+        if (container) {
+            callback();
+        } else if (attempts < 20) {
+            setTimeout(() => waitForContainer(callback, attempts + 1), 200);
         }
-
-        // Add our custom identifier class
-        bgBtn.classList.add('background-btn');
-
-        // Configure button properties - try raw first, fallback to cover
-        bgBtn.href = bgUrlRaw;
-        bgBtn.target = '_blank';
-        bgBtn.rel = 'noopener noreferrer';
-
-        // Add fallback handling for when raw image doesn't exist
-        bgBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            // Try to open the raw image first
-            const testImg = new Image();
-            testImg.onload = function() {
-                window.open(bgUrlRaw, '_blank');
-            };
-            testImg.onerror = function() {
-                // If raw fails, fallback to cover
-                window.open(bgUrlCover, '_blank');
-            };
-            testImg.src = bgUrlRaw;
-        });
-
-        // Add icon and text content
-        bgBtn.innerHTML = '<i class="fas fa-image"></i><span>Background</span>';
-
-        // Insert button into the container
-        container.appendChild(bgBtn);
     }
 
-    // Enhanced observer to handle React routing and dynamic content
-    function setupObserver() {
-        const observer = new MutationObserver((mutations) => {
-            // Check if we're on a beatmapset page
-            if (window.location.pathname.includes('/beatmapsets/')) {
-                const container = document.querySelector('.beatmapset-header__buttons');
-                if (container) {
-                    addBackgroundButton();
-                }
-            }
-        });
-
-        // Start observing the entire document for changes
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        // Also listen for URL changes (React routing)
-        let lastUrl = location.href;
-        new MutationObserver(() => {
-            const url = location.href;
-            if (url !== lastUrl) {
-                lastUrl = url;
-                // Small delay to let React finish rendering
-                setTimeout(() => {
-                    if (window.location.pathname.includes('/beatmapsets/')) {
-                        addBackgroundButton();
-                    }
-                }, 100);
-            }
-        }).observe(document, { subtree: true, childList: true });
-    }
-
-    // Initialize the script
+    // Run on initial load
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', setupObserver);
+        document.addEventListener('DOMContentLoaded', () => {
+            setupObservers();
+            waitForContainer(tryInjectButton);
+        });
     } else {
-        setupObserver();
-    }
-
-    // Try to add button immediately if already on a beatmapset page
-    if (window.location.pathname.includes('/beatmapsets/')) {
-        addBackgroundButton();
+        setupObservers();
+        waitForContainer(tryInjectButton);
     }
 })();
