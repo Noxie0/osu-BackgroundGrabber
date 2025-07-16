@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         osu! BackgroundGrabber
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.3.1
 // @description  Seamlessly adds a stylish background download button to osu! beatmap pages - grab those beautiful covers with one click!
 // @author       Noxie
 // @match        https://osu.ppy.sh/*
