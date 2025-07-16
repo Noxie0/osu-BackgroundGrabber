@@ -161,27 +161,6 @@
             background: rgba(255, 107, 179, 1);
             transform: scale(1.1);
         }
-
-        .bg-grabber-close-btn {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #ccc;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 0;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .bg-grabber-close-btn:hover {
-            color: white;
-        }
     `;
     document.head.appendChild(style);
 
@@ -189,7 +168,6 @@
         const panel = document.createElement('div');
         panel.className = 'bg-grabber-settings';
         panel.innerHTML = `
-            <button class="bg-grabber-close-btn" title="Close">×</button>
             <h3>Background Grabber Settings</h3>
             <div class="bg-grabber-setting-item">
                 <input type="checkbox" id="bg-button-toggle" ${currentSettings.buttonEnabled ? 'checked' : ''}>
@@ -209,7 +187,6 @@
         const buttonToggle = panel.querySelector('#bg-button-toggle');
         const textToggle = panel.querySelector('#bg-text-toggle');
         const iconToggle = panel.querySelector('#bg-icon-toggle');
-        const closeBtn = panel.querySelector('.bg-grabber-close-btn');
 
         buttonToggle.addEventListener('change', (e) => {
             currentSettings.buttonEnabled = e.target.checked;
@@ -281,11 +258,6 @@
                 waitForContainer(tryInjectButton);
             }, 50);
         });
-
-        closeBtn.addEventListener('click', () => {
-            panel.classList.remove('show');
-        });
-
         // Initialize settings state
         updateSettingsState();
 
