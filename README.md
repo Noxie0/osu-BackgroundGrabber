@@ -2,7 +2,7 @@
 
 > Adds a one-click background download button to osu! beatmap pages.
 
-[![Version](https://img.shields.io/badge/version-1.5-pink?style=flat-square)](https://github.com/Noxie0/osu-BackgroundGrabber/releases)
+[![Version](https://img.shields.io/greasyfork/v/542558?style=flat-square&label=version&color=pink)](https://greasyfork.org/en/scripts/542558-osu-backgroundgrabber)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](./LICENSE)
 [![GreasyFork](https://img.shields.io/badge/GreasyFork-Install-red?style=flat-square)](https://greasyfork.org/en/scripts/542558-osu-backgroundgrabber)
 
