@@ -53,7 +53,7 @@ URL pattern: `https://assets.ppy.sh/beatmaps/{id}/covers/fullsize.jpg`
 ## Changelog
 
 ### v1.5
-- Switched from `raw.jpg` to `fullsize.jpg` for higher resolution backgrounds
+- Switched from `raw.jpg` to `fullsize.jpg` — `raw.jpg` was removed from osu!'s servers
 
 ### v1.4
 - Added settings panel (color customization, button/icon/text toggles)
