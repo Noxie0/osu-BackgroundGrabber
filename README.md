@@ -5,7 +5,7 @@ A userscript that seamlessly adds a stylish background download button to osu! b
 ## Features
 
 - Adds a "Background" button to osu! beatmapset pages.
-- Downloads the original full-size background image where available, or the cover image as a fallback.
+- Downloads the full-size background image (`fullsize.jpg`) where available, or the cover image as a fallback.
 - Button styling matches osu!'s interface for a native look and feel.
 - Smart detection and insertion even with osu!'s React-based dynamic routing.
 - Compatible with osuplus beatmap mirror buttons.
@@ -40,8 +40,21 @@ A userscript that seamlessly adds a stylish background download button to osu! b
 ## How it works
 
 - The script inserts a new button into the beatmap page's header.
-- When clicked, the button tries to open the original background image. If it doesn't exist, it automatically falls back to the cover image.
+- When clicked, the button tries to open the full-size background image (`fullsize.jpg`). If it doesn't exist, it automatically falls back to the cover image.
 - The button is always available and updates itself when navigating between beatmap sets (even with React routing).
+
+## Changelog
+
+### v1.5
+- Changed background image URL from `raw.jpg` to `fullsize.jpg` for higher quality output.
+
+### v1.4
+- Added settings panel with customizable accent color, button/icon/text toggles.
+- Settings persist via localStorage.
+- MutationObserver-based button re-injection for React routing stability.
+
+### v1.2.1
+- Initial public release.
 
 ## Requirements
 
