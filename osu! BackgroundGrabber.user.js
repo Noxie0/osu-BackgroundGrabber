@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          osu! BackgroundGrabber
 // @namespace     http://tampermonkey.net/
-// @version       1.4
+// @version       1.5
 // @description   Seamlessly adds a stylish background download button to osu! beatmap pages - grab those beautiful covers with one click!
 // @author        Noxie
 // @match         https://osu.ppy.sh/*
@@ -618,7 +618,7 @@
     }
 
     function createButton(beatmapSetId, container) {
-        const rawUrl = `https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/raw.jpg`;
+        const fullsizeUrl = `https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/fullsize.jpg`;
         const fallbackUrl = `https://assets.ppy.sh/beatmaps/${beatmapSetId}/covers/cover.jpg`;
 
         const existingButtonReference = container.querySelector('a[class*="btn"], button[class*="btn"]');
@@ -633,9 +633,9 @@
         bgBtn.addEventListener('click', (e) => {
             e.preventDefault();
             const testImg = new Image();
-            testImg.onload = () => window.open(rawUrl, '_blank');
+            testImg.onload = () => window.open(fullsizeUrl, '_blank');
             testImg.onerror = () => window.open(fallbackUrl, '_blank');
-            testImg.src = rawUrl;
+            testImg.src = fullsizeUrl;
         });
 
         container.appendChild(bgBtn);
